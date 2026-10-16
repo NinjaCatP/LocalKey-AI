@@ -1,0 +1,7 @@
+LocalKey AI bundles:
+- Qwen2.5-0.5B-Instruct (GGUF Q4_K_M) - Copyright Alibaba Cloud / Qwen team - Apache License 2.0 - https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF
+- llama.cpp / ggml - Copyright The ggml authors - MIT License - https://github.com/ggml-org/llama.cpp
+- FrequencyWords English list (filtered top 40k) - Hermit Dave - CC BY-SA 4.0 - https://github.com/hermitdave/FrequencyWords
+
+
+Emoji list: derived from Unicode emoji-test.txt (https://unicode.org/Public/emoji/latest/), Copyright (c) Unicode, Inc., Unicode License v3. Emoji are drawn with the phone's own system emoji font.

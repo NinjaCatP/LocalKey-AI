@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.jason.aikeyboard" android:versionCode="9" android:versionName="8.1">
+    <uses-sdk android:minSdkVersion="30" android:targetSdkVersion="36"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <queries><intent><action android:name="android.speech.RecognitionService"/></intent></queries>
+    <application android:label="LocalKey AI" android:icon="@drawable/ic_launcher" android:allowBackup="false"
+        android:extractNativeLibs="false" android:theme="@android:style/Theme.DeviceDefault.NoActionBar" android:largeHeap="false">
+        <service android:name=".AIKeyboardService" android:label="LocalKey AI" android:exported="true"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter><action android:name="android.view.InputMethod"/></intent-filter>
+            <meta-data android:name="android.view.im" android:resource="@xml/method"/>
+        </service>
+        <activity android:name=".Settings" android:label="LocalKey AI" android:exported="true" android:windowSoftInputMode="adjustResize">
+            <intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter>
+        </activity>
+        <activity android:name=".MicPermissionActivity" android:exported="false" android:excludeFromRecents="true"
+            android:taskAffinity="com.jason.aikeyboard.mic" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity android:name=".VoiceDiagActivity" android:label="Voice diagnostics" android:exported="false"/>
+    </application>
+</manifest>

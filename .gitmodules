@@ -1,0 +1,6 @@
+[submodule "src/llama.cpp"]
+	path = src/llama.cpp
+	url = https://github.com/ggml-org/llama.cpp
+[submodule "src/whisper.cpp"]
+	path = src/whisper.cpp
+	url = https://github.com/ggml-org/whisper.cpp

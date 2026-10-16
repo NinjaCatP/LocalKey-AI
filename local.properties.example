@@ -1,0 +1,5 @@
+# Copy to local.properties (gitignored) and fill in. Never commit the real file or the keystore.
+AIK_KEYSTORE=/path/to/release.jks
+AIK_KEY_ALIAS=your-alias
+AIK_STORE_PASS=change-me
+AIK_KEY_PASS=change-me

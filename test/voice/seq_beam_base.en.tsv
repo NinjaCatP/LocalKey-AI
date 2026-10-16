@@ -1,0 +1,37 @@
+LOAD_MS	107
+wav/espeak_01.wav	876	3.37	 Hey, are we still meeting for lunch tomorrow at noon?
+wav/espeak_02.wav	869	3.44	 I just got home and I'm going to take a quick nap.
+wav/espeak_03.wav	823	2.46	 Can you send me the address on the restaurant?
+wav/espeak_04.wav	864	3.60	 But when I look straight this weekend, let's go to the beach.
+wav/espeak_05.wav	867	3.57	 Please remember to pick up Milk and F on your way, Mark.
+wav/espeak_06.wav	821	2.54	 I'll call you back in about 10 minutes.
+wav/espeak_07.wav	802	3.41	 Thanks so much for helping me move last Saturday.
+wav/espeak_08.wav	756	2.64	 What time does the movie start tonight?
+wav/espeak_09.wav	893	3.67	 My phone battery is almost dead, so text me instead.
+wav/espeak_10.wav	874	3.38	 Happy birthday! I hope you have an amazing day!
+wav/espeak_11.wav	837	3.14	 The meeting has been moved to Earth after noon.
+wav/espeak_12.wav	863	3.46	 Could you give me the command line for combining the files?
+wav/noisy_01.wav	936	2.96	 Hey, are we still meeting for lunch tomorrow at noon?
+wav/noisy_02.wav	869	2.48	 I just got home and I'm going to take a quick nap.
+wav/noisy_03.wav	865	2.47	 Can you send me the address of the restaurant?
+wav/noisy_04.wav	1004	2.76	 The weather looks great this weekend. Let's go to the beach.
+wav/noisy_05.wav	866	3.02	 Please remember to pick up milk and eggs on your way back.
+wav/noisy_06.wav	840	2.06	 I'll call you back in about 10 minutes.
+wav/noisy_07.wav	809	2.75	 Thanks so much for helping me move last Saturday.
+wav/noisy_08.wav	804	1.92	 What time does the movie start tonight?
+wav/noisy_09.wav	824	3.53	 My phone battery is almost dead, so text me instead.
+wav/noisy_10.wav	840	2.75	 Happy birthday! I hope you have an amazing day!
+wav/noisy_11.wav	808	2.52	 The meeting has been moved to Thursday afternoon.
+wav/noisy_12.wav	812	2.79	 Could you give me the command line for combining the files?
+wav/piper_01.wav	822	2.96	 Hey, are we still meeting for lunch tomorrow at noon?
+wav/piper_02.wav	825	2.48	 I just got home and I'm going to take a quick nap.
+wav/piper_03.wav	779	2.47	 Can you send me the address of the restaurant?
+wav/piper_04.wav	803	2.76	 The weather looks great this weekend, let's go to the beach.
+wav/piper_05.wav	784	3.02	 Please remember to pick up milk and eggs on your way back.
+wav/piper_06.wav	789	2.06	 I'll call you back in about 10 minutes.
+wav/piper_07.wav	759	2.75	 Thanks so much for helping me move last Saturday.
+wav/piper_08.wav	751	1.92	 What time does the movie start tonight?
+wav/piper_09.wav	805	3.53	 My phone battery is almost dead, so text me instead.
+wav/piper_10.wav	786	2.75	 Happy birthday. I hope you have an amazing day.
+wav/piper_11.wav	753	2.52	 The meeting has been moved to Thursday afternoon.
+wav/piper_12.wav	821	2.79	 Could you give me the command line for combining the files?

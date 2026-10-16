@@ -1,0 +1,10 @@
+whisper base.en q5_1 load 116 ms (x86 host, 4 threads)
+  Hey, are we still meeting for lunch tomorrow at noon?  ->  Hey, are we still meeting for lunch tomorrow at noon?
+  I just got home and I'm going to take a quick nap.  ->  I just got home and I'm going to take a quick nap.
+  Can you send me the address of the restaurant?  ->  Can you send me the address of the restaurant?
+  final  piper  WER   0.9%  RTF 0.344  (12 clips, 32 s audio, 919 ms/clip)
+  final  noisy  WER   0.9%  RTF 0.353  (12 clips, 32 s audio, 941 ms/clip)
+  final  espeak WER  10.3%  RTF 0.292  (12 clips, 39 s audio, 940 ms/clip)
+  fast   piper  WER   0.9%  RTF 0.082  (12 clips, 32 s audio, 219 ms/clip)
+  fast   noisy  WER   0.9%  RTF 0.078  (12 clips, 32 s audio, 209 ms/clip)
+  fast   espeak WER   7.8%  RTF 0.072  (12 clips, 39 s audio, 233 ms/clip)
