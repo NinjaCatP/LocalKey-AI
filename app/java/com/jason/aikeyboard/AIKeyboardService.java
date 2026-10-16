@@ -1,4 +1,5 @@
 package com.jason.aikeyboard;
+import com.jason.aikeyboard.core.EnterAction;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -276,9 +277,7 @@ public class AIKeyboardService extends InputMethodService implements KeyboardVie
         keyboard.setHaptics(prefs.getBoolean(Settings.HAPTICS, true));
         keyboard.setSwipe(swipeOn(), prefs.getBoolean(Settings.SWIPE_TRAIL, true)); lastSwipeCommit = null; swipeAlts = null;
         keyboard.setLayer(cls == InputType.TYPE_CLASS_NUMBER || cls == InputType.TYPE_CLASS_PHONE || cls == InputType.TYPE_CLASS_DATETIME ? KeyboardLayout.Layer.SYMBOLS : KeyboardLayout.Layer.LETTERS);
-        int action = info.imeOptions & EditorInfo.IME_MASK_ACTION;
-        boolean multiLine = (info.inputType & InputType.TYPE_TEXT_FLAG_MULTI_LINE) != 0 && (info.imeOptions & EditorInfo.IME_FLAG_NO_ENTER_ACTION) != 0 || (info.inputType & InputType.TYPE_TEXT_FLAG_MULTI_LINE) != 0 && action == EditorInfo.IME_ACTION_UNSPECIFIED;
-        keyboard.setEnterLabel(multiLine ? "⏎" : action == EditorInfo.IME_ACTION_SEARCH ? "🔍" : action == EditorInfo.IME_ACTION_SEND ? "➤" : action == EditorInfo.IME_ACTION_GO ? "Go" : action == EditorInfo.IME_ACTION_NEXT ? "Next" : action == EditorInfo.IME_ACTION_DONE ? "Done" : "⏎");
+        keyboard.setEnterLabel(enterAction(info).label);
         closePreview(false); if (emoji != null && emoji.getVisibility() == View.VISIBLE) showEmoji(false);
         if (voice != null && voice.getVisibility() == View.VISIBLE) { voiceEngine().cancel(); showVoice(false); }
         if (prefs.getBoolean(Settings.AI_PREDICT, true) || prefs.getBoolean(Settings.AI_ACTIONS, true)) ai().ensureLoaded();
@@ -435,17 +434,21 @@ public class AIKeyboardService extends InputMethodService implements KeyboardVie
             case KeyboardLayout.ALPHA: keyboard.setLayer(KeyboardLayout.Layer.LETTERS); updateShiftAuto(); return;
             case KeyboardLayout.DELETE: handleDelete(ic); return;
             case KeyboardLayout.ENTER: {
-                commitWord(ic, false);
+                // v8.2: commit the literal typed word (never an autocorrection or a prediction), then do the editor's action
+                commitWord(ic, false); ic.finishComposingText();
                 if (!noLearn) user.endPhrase();
-                EditorInfo ei = getCurrentInputEditorInfo(); int action = ei.imeOptions & EditorInfo.IME_MASK_ACTION;
-                boolean multi = (ei.inputType & InputType.TYPE_TEXT_FLAG_MULTI_LINE) != 0;
-                if (!multi && action != EditorInfo.IME_ACTION_NONE && action != EditorInfo.IME_ACTION_UNSPECIFIED && (ei.imeOptions & EditorInfo.IME_FLAG_NO_ENTER_ACTION) == 0) ic.performEditorAction(action);
-                else if (!multi && action == EditorInfo.IME_ACTION_UNSPECIFIED) sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER);
+                EnterAction ea = enterAction(getCurrentInputEditorInfo());
+                if (ea.kind == EnterAction.Kind.ACTION) ic.performEditorAction(ea.actionId);
+                else if (ea.kind == EnterAction.Kind.ENTER_KEY) sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER);
                 else ic.commitText("\n", 1);
-                justAutoSpaced = false; updateShiftAuto(); updateSuggestions(); return;
+                justAutoSpaced = false; lastAutoCorrectFrom = null; updateShiftAuto(); updateSuggestions(); return;
             }
             default: handleChar(ic, code);
         }
+    }
+    static EnterAction enterAction(EditorInfo ei) {
+        if (ei == null) return EnterAction.of(0, 0, 0, null);
+        return EnterAction.of(ei.inputType, ei.imeOptions, ei.actionId, ei.actionLabel);
     }
     @Override public void onText(String text) {
         InputConnection ic = getCurrentInputConnection(); if (ic == null) return;

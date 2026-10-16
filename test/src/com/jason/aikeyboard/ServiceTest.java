@@ -498,4 +498,51 @@ public class ServiceTest {
         assertTrue(text(), text().endsWith(" "));
         shot(input, 1440, "v6_current_word");
     }
+
+    // ---------------- v8.2: action key (Search/Go/Send/Done/Next/Previous) ----------------
+    java.util.List<String> acts = new java.util.ArrayList<>();
+    void field(int inputType, int imeOptions) {
+        et.setInputType(inputType); et.setImeOptions(imeOptions); et.setText(""); acts.clear();
+        s.ei = new EditorInfo(); InputConnection real = et.onCreateInputConnection(s.ei);
+        s.ei.inputType = inputType; s.ei.imeOptions = imeOptions;
+        s.ic = new android.view.inputmethod.InputConnectionWrapper(real, true) {
+            @Override public boolean performEditorAction(int a) { acts.add("action:" + a); return true; }
+            @Override public boolean sendKeyEvent(android.view.KeyEvent k) { if (k.getAction() == android.view.KeyEvent.ACTION_UP) acts.add("key:" + k.getKeyCode()); return true; }
+        };
+        s.onStartInputView(s.ei, false);
+    }
+    void enter() { s.onKey(KeyboardLayout.ENTER); ShadowLooper.idleMainLooper(); }
+    static final int TXT = InputType.TYPE_CLASS_TEXT, ML = InputType.TYPE_TEXT_FLAG_MULTI_LINE;
+    @Test public void v82EveryActionTypeEmptyAndMidWord() {
+        int[] ids = {EditorInfo.IME_ACTION_SEARCH, EditorInfo.IME_ACTION_GO, EditorInfo.IME_ACTION_SEND, EditorInfo.IME_ACTION_DONE, EditorInfo.IME_ACTION_NEXT, EditorInfo.IME_ACTION_PREVIOUS};
+        for (int multi : new int[]{0, ML}) for (int id : ids) {
+            field(TXT | multi, id); enter();
+            assertEquals("empty " + id, "", text()); assertEquals(java.util.List.of("action:" + id), acts);
+            field(TXT | multi, id); type("dont"); enter();   // mid-word: literal word, no autocorrect, no newline
+            assertEquals("dont", text()); assertEquals(java.util.List.of("action:" + id), acts);
+        }
+    }
+    @Test public void v82GoogleSearchBoxNeverInsertsPrediction() {
+        field(TXT | ML | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT, EditorInfo.IME_ACTION_SEARCH);
+        type("i dont"); enter(); assertEquals("I dont", text()); assertEquals(java.util.List.of("action:3"), acts);
+        field(TXT | ML, EditorInfo.IME_ACTION_SEARCH); type("weather "); acts.clear(); enter();
+        assertEquals("weather ", text()); assertEquals(java.util.List.of("action:3"), acts);
+    }
+    @Test public void v82SwipedWordThenSearch() {
+        field(TXT | ML, EditorInfo.IME_ACTION_SEARCH); swipe("hello"); acts.clear(); enter();
+        assertEquals("Hello ", text()); assertEquals(java.util.List.of("action:3"), acts);
+    }
+    @Test public void v82NewlineAndEnterKeyFallbacks() {
+        field(TXT | ML, EditorInfo.IME_ACTION_UNSPECIFIED); type("hi"); enter(); assertEquals("hi\n", text()); assertTrue(acts.isEmpty());
+        field(TXT | ML, EditorInfo.IME_ACTION_SEND | EditorInfo.IME_FLAG_NO_ENTER_ACTION); type("hi"); enter(); assertEquals("hi\n", text()); assertTrue(acts.isEmpty());
+        field(TXT, EditorInfo.IME_ACTION_UNSPECIFIED); type("hi"); enter(); assertEquals("hi", text()); assertEquals(java.util.List.of("key:66"), acts);
+        field(TXT, EditorInfo.IME_ACTION_NONE); enter(); assertEquals(java.util.List.of("key:66"), acts);
+    }
+    @Test public void v82CustomActionIdAndLabels() {
+        field(TXT, EditorInfo.IME_ACTION_DONE); s.ei.actionId = 42; s.ei.actionLabel = "Log in"; s.onStartInputView(s.ei, false);
+        enter(); assertEquals(java.util.List.of("action:42"), acts);
+        assertEquals("🔍", AIKeyboardService.enterAction(ei(TXT | ML, EditorInfo.IME_ACTION_SEARCH)).label);
+        assertEquals("⏎", AIKeyboardService.enterAction(ei(TXT | ML, EditorInfo.IME_ACTION_SEARCH | EditorInfo.IME_FLAG_NO_ENTER_ACTION)).label);
+    }
+    static EditorInfo ei(int t, int o) { EditorInfo e = new EditorInfo(); e.inputType = t; e.imeOptions = o; return e; }
 }

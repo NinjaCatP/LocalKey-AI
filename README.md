@@ -20,12 +20,12 @@ A fully on-device AI keyboard for Android (arm64, Android 11+). Nothing you type
 More screenshots are in [docs/screenshots](docs/screenshots).
 
 ## Install
-Download `LocalKey-AI-v8.1-arm64.apk` from [Releases](../../releases), install it, then open LocalKey AI and follow the steps to enable and choose the keyboard.
+Download `LocalKey-AI-v8.2-arm64.apk` from [Releases](../../releases), install it, then open LocalKey AI and follow the steps to enable and choose the keyboard.
 
 The package name is still `com.jason.aikeyboard`, and the release is signed with the same key as the earlier "AI Keyboard" builds (v1 to v8), so it installs over them as an update and keeps your learned data. Changing either one would break updates.
 
 If you got the APK as split parts (`*.apk.part00` …), join them first:
-- Termux: `cat LocalKey-AI-v8.1-arm64.apk.part0* > LocalKey-AI.apk`
+- Termux: `cat LocalKey-AI-v8.2-arm64.apk.part0* > LocalKey-AI.apk`
 - Windows: `copy /b file.part00+file.part01+... LocalKey-AI.apk`
 
 ## Build
@@ -36,7 +36,7 @@ git clone --recursive https://github.com/NinjaCatP/LocalKey-AI.git && cd LocalKe
 scripts/fetch_models.sh             # downloads both models from Hugging Face into models/
 ANDROID_NDK=/path/to/ndk scripts/build_native.sh
 cp local.properties.example local.properties   # fill in your keystore path, alias and passwords
-ANDROID_SDK=/path/to/sdk ./build.sh # -> output/LocalKey-AI-v8.1-arm64.apk
+ANDROID_SDK=/path/to/sdk ./build.sh # -> output/LocalKey-AI-v8.2-arm64.apk
 ```
 
 Signing secrets come only from environment variables (`AIK_KEYSTORE`, `AIK_KEY_ALIAS`, `AIK_STORE_PASS`, `AIK_KEY_PASS`) or a gitignored `local.properties`. No keystore or password is in this repo. A build signed with a different key can't update an existing install.

@@ -1,5 +1,5 @@
 #!/bin/bash
-# ./build.sh -> output/LocalKey-AI-v8.1-arm64.apk
+# ./build.sh -> output/LocalKey-AI-v8.2-arm64.apk
 # Signing: set AIK_KEYSTORE, AIK_KEY_ALIAS, AIK_STORE_PASS, AIK_KEY_PASS (or put them in gitignored local.properties as KEY=VALUE lines)
 set -e
 [ -f /workspace/apkport/env.sh ] && . /workspace/apkport/env.sh
@@ -7,7 +7,7 @@ R=$(cd "$(dirname "$0")" && pwd); cd $R
 SDK=${ANDROID_SDK:-/workspace/tools/sdk}; BT=${BUILD_TOOLS:-$SDK/build-tools/36.0.0}; AJ=${ANDROID_JAR:-$SDK/platforms/android-36/android.jar}
 [ -f local.properties ] && { set -a; . ./local.properties; set +a; }
 : "${AIK_KEYSTORE:?set AIK_KEYSTORE (path to release .jks)}" "${AIK_KEY_ALIAS:?}" "${AIK_STORE_PASS:?}" "${AIK_KEY_PASS:=$AIK_STORE_PASS}"
-VERSION_CODE=${VERSION_CODE:-9}; VERSION_NAME=${VERSION_NAME:-8.1}
+VERSION_CODE=${VERSION_CODE:-10}; VERSION_NAME=${VERSION_NAME:-8.2}
 W=$R/work; rm -rf $W; mkdir -p $W/res $W/cls $W/dex $W/gen
 $BT/aapt2 compile --dir app/res -o $W/res/res.zip
 $BT/aapt2 link -I $AJ --manifest app/AndroidManifest.xml -o $W/base.apk --java $W/gen $W/res/res.zip --min-sdk-version 30 --target-sdk-version 36 --version-code $VERSION_CODE --version-name $VERSION_NAME
